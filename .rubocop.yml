@@ -1,0 +1,140 @@
+AllCops:
+  Exclude:
+    - 'bin/*'
+  TargetRubyVersion: 2.3
+
+Layout/AccessModifierIndentation:
+  EnforcedStyle: indent
+  SupportedStyles:
+    - outdent
+    - indent
+
+Layout/AlignHash:
+  EnforcedHashRocketStyle: key
+  EnforcedColonStyle: key
+  EnforcedLastArgumentHashStyle: always_inspect
+
+Layout/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/EmptyLinesAroundClassBody:
+  EnforcedStyle: empty_lines_except_namespace
+
+Layout/EmptyLinesAroundModuleBody:
+  EnforcedStyle: empty_lines_except_namespace
+
+Layout/ExtraSpacing:
+  AllowForAlignment: false
+
+Layout/FirstArrayElementLineBreak:
+  Enabled: true
+
+Layout/FirstHashElementLineBreak:
+  Enabled: true
+
+Layout/FirstMethodArgumentLineBreak:
+  Enabled: true
+
+Layout/FirstParameterIndentation:
+  EnforcedStyle: consistent
+
+Layout/IndentArray:
+  EnforcedStyle: consistent
+
+Layout/IndentHash:
+  EnforcedStyle: consistent
+
+Layout/MultilineAssignmentLayout:
+  Enabled: true
+  EnforcedStyle: new_line
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Layout/SpaceBeforeFirstArg:
+  AllowForAlignment: false
+
+Metrics/AbcSize:
+  Max: 20 # default: 15
+
+Metrics/ClassLength:
+  Enabled: false # todo
+  Max: 100 # default: 100
+
+Metrics/CyclomaticComplexity:
+  Enabled: false # todo
+  Max: 10 # default: 6
+
+Metrics/LineLength:
+  Enabled: false # todo
+  Max: 100 # default: 80
+
+Metrics/MethodLength:
+  Exclude:
+    - "db/migrate/*"
+  Max: 12 # default: 10
+
+Metrics/PerceivedComplexity:
+  Enabled: false # todo
+  Max: 10 # default: 7
+
+Style/BracesAroundHashParameters:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+
+Style/MethodCallWithArgsParentheses:
+  Enabled: true # false by default
+  Exclude:
+    - "config/routes.rb"
+    - "config/routes/*"
+    - "Gemfile"
+    - "**/*.gemspec"
+  IgnoreMacros: true
+  IgnoredMethods:
+    - include
+    - load
+    - print
+    - puts
+    - raise
+    - require
+    # rake
+    - desc
+    - namespace
+    - task
+    # swagger
+    - key
+    - operation
+    - property
+    - response
+    - security_definition
+    - swagger_path
+    - swagger_schema
+
+Style/ModuleFunction:
+  Enabled: false
+
+Style/SignalException:
+  EnforcedStyle: only_raise
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: no_comma
+
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/VariableNumber:
+  EnforcedStyle: snake_case
