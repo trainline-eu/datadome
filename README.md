@@ -1,5 +1,7 @@
 # Datadome
 
+[![Gem Version](https://badge.fury.io/rb/datadome.svg)](https://badge.fury.io/rb/datadome) [![Build Status](https://travis-ci.org/shopmium/datadome.svg?branch=master)](https://travis-ci.org/shopmium/datadome)
+
 Rack middleware for Datadome. https://datadome.co/
 
 ## Installation
