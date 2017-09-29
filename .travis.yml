@@ -1,14 +1,14 @@
 before_install:
-  - gem install bundler -v 1.15.3
+  - gem install bundler -v 1.15.4
 before_script:
   - cp -f .rspec.travis .rspec
 bundler_args: --without local
 dist: trusty
 language: ruby
 rvm:
-  - 2.2.7
-  - 2.3.4
-  - 2.4.1
+  - 2.2.8
+  - 2.3.5
+  - 2.4.2
 script:
   - bundle exec rake ci
 sudo: false
