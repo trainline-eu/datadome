@@ -138,7 +138,11 @@ module Datadome
     end
 
     capture("PostParamLen") do |_env, request|
-      (request.body&.read || "").length
+      raw_post_body = request.body
+      data = raw_post_body.read
+      raw_post_body.rewind if raw_post_body.respond_to?(:rewind)
+
+      (data || "").length
     end
 
     capture("AuthorizationLen") do |env, _request|
