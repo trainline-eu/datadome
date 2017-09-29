@@ -19,7 +19,7 @@ module Datadome
       added_headers = ::Rack::Utils::HeaderHash.new(@validation_response.response_headers)
 
       headers = ::Rack::Utils::HeaderHash.new(headers)
-      existing_set_cookie = headers.delete("Set-Cookie")
+      existing_set_cookie = headers["Set-Cookie"]
 
       headers.merge!(added_headers)
 
