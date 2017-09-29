@@ -138,7 +138,7 @@ module Datadome
     end
 
     capture("PostParamLen") do |_env, request|
-      (request.body || "").length
+      (request.body&.read || "").length
     end
 
     capture("AuthorizationLen") do |env, _request|
