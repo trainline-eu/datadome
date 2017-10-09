@@ -4,6 +4,8 @@
 
 Rack middleware for Datadome. https://datadome.co/
 
+This is still an early version.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -20,9 +22,30 @@ Or install it yourself as:
 
     $ gem install datadome
 
-## Usage
+## Usage with Rails
 
-TODO: Write usage instructions here
+Create a `config/initializers/datadome.rb` file:
+
+```ruby
+require "datadome"
+
+Datadome.configure do |config|
+  # Set the Datadome API key
+  config.api_key = "my-api-key"
+  # or use an environment variable (better)
+  # config.api_key = ENV["DATADOME_API_KEY"]
+
+  # Choose the closest Datadome API endpoint
+  # More info at https://docs.datadome.co/docs/api-server
+  config.api_server = "api-us-east-1.datadome.co"
+end
+
+Datadome.logger = Logger.new(STDOUT, level: :debug)
+
+Rails.configuration.middleware.insert_after(ActionDispatch::RemoteIp, ::Datadome::Rack)
+```
+
+For the Javascript snippet, insert it directly in your layout file.
 
 ## Development
 
