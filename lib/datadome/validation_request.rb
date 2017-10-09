@@ -139,6 +139,8 @@ module Datadome
 
     capture("PostParamLen") do |_env, request|
       raw_post_body = request.body
+      next(0) unless raw_post_body
+
       data = raw_post_body.read
       raw_post_body.rewind if raw_post_body.respond_to?(:rewind)
 
