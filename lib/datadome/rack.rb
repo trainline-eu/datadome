@@ -11,8 +11,9 @@ module Datadome
 
     def call(env)
       inquirer = Inquirer.new(env)
-      inquired = inquirer.inquire
+      return @app.call(env) if inquirer.ignore?
 
+      inquired = inquirer.inquire
       return @app.call(env) unless inquired
 
       if inquirer.intercept?

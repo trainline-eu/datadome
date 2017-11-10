@@ -38,6 +38,12 @@ Datadome.configure do |config|
   # Choose the closest Datadome API endpoint
   # More info at https://docs.datadome.co/docs/api-server
   config.api_server = "api-us-east-1.datadome.co"
+
+  # Add include matchers (optional)
+  config.include_matchers << ->(host, path) { host == "www.my-domain.com" }
+
+  # Add exclude matchers (optional)
+  config.exclude_matchers << ->(host, path) { path =~ /\.(jpg|jpeg|png|gif)/i }
 end
 
 Datadome.logger = Logger.new(STDOUT, level: :debug)

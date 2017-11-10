@@ -5,8 +5,11 @@ require "rack"
 module Datadome
   class Inquirer
 
-    def initialize(env)
+    def initialize(env, exclude_matchers: nil, include_matchers: nil)
       @env = env
+
+      @exclude_matchers = exclude_matchers || Datadome.configuration.exclude_matchers
+      @include_matchers = include_matchers || Datadome.configuration.include_matchers
     end
 
     def build_response
@@ -30,6 +33,32 @@ module Datadome
       [status, headers, response]
     end
 
+    def ignore?
+      return false if include_matchers.empty? && exclude_matchers.empty?
+
+      request = ::Rack::Request.new(@env)
+
+      if include_matchers.any?
+        any_include_matches =
+          include_matchers.any? do |matcher|
+            matcher.call(request.host, request.path)
+          end
+
+        return true unless any_include_matches
+      end
+
+      if exclude_matchers.any?
+        any_exclude_matches =
+          exclude_matchers.any? do |matcher|
+            matcher.call(request.host, request.path)
+          end
+
+        return true if any_exclude_matches
+      end
+
+      false
+    end
+
     def intercept?
       @validation_response.pass == false || @validation_response.redirect
     end
@@ -39,6 +68,8 @@ module Datadome
     end
 
     private
+
+    attr_reader :exclude_matchers, :include_matchers
 
     def validate_request
       validation_request = ValidationRequest.from_env(@env)
