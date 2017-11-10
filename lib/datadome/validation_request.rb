@@ -85,15 +85,15 @@ module Datadome
       env["HTTP_ACCEPT_LANGUAGE"]
     end
 
-    capture("CacheControl") do |env, _request|
+    capture("CacheControl", max_size: 128) do |env, _request|
       env["HTTP_CACHE_CONTROL"]
     end
 
-    capture("Connection") do |env, _request|
+    capture("Connection", max_size: 128) do |env, _request|
       env["HTTP_CONNECTION"]
     end
 
-    capture("Host") do |_env, request|
+    capture("Host", max_size: 512) do |_env, request|
       request.host
     end
 
@@ -101,7 +101,7 @@ module Datadome
       env["HTTP_ORIGIN"]
     end
 
-    capture("Pragma") do |env, _request|
+    capture("Pragma", max_size: 128) do |env, _request|
       env["HTTP_PRAGMA"]
     end
 

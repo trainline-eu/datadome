@@ -109,9 +109,9 @@ RSpec.describe Datadome::ValidationRequest do
         expect(subject["CacheControl"]).to eq("no-cache, no-store, must-revalidate")
       end
 
-      it "limits it to 512 bytes", pending: "unspecified yet" do
+      it "limits it to 128 bytes" do
         env["HTTP_CACHE_CONTROL"] = "a" * 5000
-        expect(subject["CacheControl"].length).to eq(512)
+        expect(subject["CacheControl"].length).to eq(128)
       end
     end
 
@@ -131,9 +131,9 @@ RSpec.describe Datadome::ValidationRequest do
         expect(subject["Connection"]).to eq("keep-alive")
       end
 
-      it "limits it to 512 bytes", pending: "unspecified yet" do
+      it "limits it to 128 bytes" do
         env["HTTP_CONNECTION"] = "a" * 5000
-        expect(subject["Connection"].length).to eq(512)
+        expect(subject["Connection"].length).to eq(128)
       end
     end
 
@@ -164,7 +164,7 @@ RSpec.describe Datadome::ValidationRequest do
         expect(subject["Host"]).to eq("www.my-domain.com")
       end
 
-      it "limits it to 512 bytes", pending: "unspecified yet" do
+      it "limits it to 512 bytes" do
         env["HTTP_HOST"] = "a" * 5000
         expect(subject["Host"].length).to eq(512)
       end
@@ -215,9 +215,9 @@ RSpec.describe Datadome::ValidationRequest do
         expect(subject["Pragma"]).to eq("no-cache")
       end
 
-      it "limits it to 512 bytes", pending: "unspecified yet" do
+      it "limits it to 128 bytes" do
         env["HTTP_PRAGMA"] = "a" * 5000
-        expect(subject["Pragma"].length).to eq(512)
+        expect(subject["Pragma"].length).to eq(128)
       end
     end
 
