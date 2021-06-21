@@ -9,9 +9,11 @@ module Datadome
       @api_server = "api.datadome.co"
       @exclude_matchers = []
       @include_matchers = []
+      @monitor_mode = false
+      @expose_headers = false
     end
 
-    attr_accessor :api_key, :api_server, :exclude_matchers, :include_matchers
+    attr_accessor :api_key, :api_server, :exclude_matchers, :include_matchers, :monitor_mode, :expose_headers
 
   end
 end

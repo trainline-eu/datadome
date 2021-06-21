@@ -19,6 +19,8 @@ module Datadome
             pass
           end
 
+        validation_response.request_headers["X-DataDomeResponse"] = response.headers["X-DataDomeResponse"]
+
         parse_headers_list(response.headers["X-DataDome-request-headers"]).each do |key|
           validation_response.request_headers[key] = response.headers[key]
         end

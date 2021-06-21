@@ -44,6 +44,13 @@ Datadome.configure do |config|
 
   # Add exclude matchers (optional)
   config.exclude_matchers << ->(host, path) { path =~ /\.(jpg|jpeg|png|gif)/i }
+  
+  # Enable monitor mode (optional)
+  # Does not block incoming requests flagged as coming from a bot (useful for logging only)
+  config.monitor_mode = true
+  
+  # Expose enriched headers
+  # config.expose_headers = true
 end
 
 Datadome.logger = Logger.new(STDOUT, level: :debug)
