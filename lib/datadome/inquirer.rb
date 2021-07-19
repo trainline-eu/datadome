@@ -5,9 +5,11 @@ require "rack"
 module Datadome
   class Inquirer
 
-    def initialize(env, exclude_matchers: nil, include_matchers: nil)
+    def initialize(env, exclude_matchers: nil, include_matchers: nil, monitor_mode: nil, expose_headers: nil)
       @env = env
 
+      @monitor_mode = monitor_mode || Datadome.configuration.monitor_mode
+      @expose_headers = expose_headers || Datadome.configuration.expose_headers
       @exclude_matchers = exclude_matchers || Datadome.configuration.exclude_matchers
       @include_matchers = include_matchers || Datadome.configuration.include_matchers
     end
@@ -25,6 +27,11 @@ module Datadome
       existing_set_cookie = headers["Set-Cookie"]
 
       headers.merge!(added_headers)
+
+      if @expose_headers
+        datadome_qualifying_headers = ::Rack::Utils::HeaderHash.new(@validation_response.request_headers)
+        headers.merge!(datadome_qualifying_headers)
+      end
 
       if added_headers["Set-Cookie"] && existing_set_cookie
         headers["Set-Cookie"] = merge_cookie(existing_set_cookie, added_headers["Set-Cookie"])
@@ -60,7 +67,7 @@ module Datadome
     end
 
     def intercept?
-      @validation_response.pass == false || @validation_response.redirect
+      @monitor_mode == false && (@validation_response.pass == false || @validation_response.redirect)
     end
 
     def inquire
