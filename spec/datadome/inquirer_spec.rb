@@ -176,13 +176,13 @@ RSpec.describe Datadome::Inquirer do
 
   describe "#intercept?" do
     context "with monitor mode disabled and when request is flagged as coming from a bot" do
-      let(:monitor_mode) { true }
+      let(:monitor_mode) { false }
 
-      it "returns false" do
+      it "returns true" do
         validation_response = instance_double("Datadome::ValidationResponse", pass: false, redirect: false)
         subject.instance_variable_set('@validation_response', validation_response)
 
-        expect(subject.intercept?).to eq(false)
+        expect(subject.intercept?).to eq(true)
       end
     end
 
