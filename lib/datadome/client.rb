@@ -53,7 +53,7 @@ module Datadome
     rescue Faraday::Error::ConnectionFailed, Faraday::Error::TimeoutError => e
       Datadome.logger.warn("Datadome: Timeout #{e}")
 
-      ValidationResponse.pass
+      ValidationResponse.timeout
     end
 
     private

@@ -29,7 +29,9 @@ module Datadome
       headers.merge!(added_headers)
 
       if @expose_headers
-        datadome_qualifying_headers = ::Rack::Utils::HeaderHash.new(@validation_response.request_headers)
+        datadome_qualifying_headers = ::Rack::Utils::HeaderHash.new(
+          @validation_response.request_headers.merge(datadome_response_time_header)
+        )
         headers.merge!(datadome_qualifying_headers)
       end
 
@@ -71,7 +73,11 @@ module Datadome
     end
 
     def inquire
+      inquiry_start_time = Time.now
       @validation_response = validate_request
+      @inquiry_duration = Time.now - inquiry_start_time
+
+      @validation_response
     end
 
     private
@@ -87,6 +93,16 @@ module Datadome
       client.validate_request(validation_request.to_api_params).tap do |validation_response|
         Datadome.logger.debug("Datadome: Validation Response: #{validation_response.inspect}")
       end
+    end
+
+    def datadome_response_time_header
+      response_time = if @validation_response&.timeout
+        -1
+      else
+        @inquiry_duration
+      end
+
+      { "X-DataDomeResponseTime" => response_time }
     end
 
     def merge_cookie(old_cookie, cookie)

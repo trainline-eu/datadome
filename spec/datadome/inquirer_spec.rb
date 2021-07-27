@@ -210,11 +210,13 @@ RSpec.describe Datadome::Inquirer do
           "X-DataDomeResponse"=>"200"
         }
       end
+      let(:timeout) { false }
 
       before do
+        subject.instance_variable_set('@inquiry_duration', 0.2)
         subject.instance_variable_set(
           '@validation_response',
-          instance_double("Datadome::ValidationResponse", request_headers: request_headers, response_headers: response_headers),
+          instance_double("Datadome::ValidationResponse", request_headers: request_headers, response_headers: response_headers, timeout: timeout),
         )
       end
 
@@ -225,6 +227,16 @@ RSpec.describe Datadome::Inquirer do
         _status, headers, _response = subject.enriching { [200, {}, nil] }
 
         expect(headers.keys).to include(*request_headers.keys, *response_headers.keys)
+      end
+
+      context "with a timeout" do
+        let(:timeout) { true }
+
+        it "returns -1 as response time" do
+          _status, headers, _response = subject.enriching { [200, {}, nil] }
+
+          expect(headers["X-DataDomeResponseTime"]).to eq(-1)
+        end
       end
     end
 
