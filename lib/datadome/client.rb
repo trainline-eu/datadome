@@ -6,9 +6,6 @@ require "socket"
 module Datadome
   class Client
 
-    OPEN_TIMEOUT = 1
-    TIMEOUT = 3
-
     class << self
 
       def base_url
@@ -63,8 +60,8 @@ module Datadome
         Faraday.new(url: self.class.base_url) do |faraday|
           faraday.request(:url_encoded)
           faraday.adapter(Faraday.default_adapter)
-          faraday.options[:open_timeout] = OPEN_TIMEOUT
-          faraday.options[:timeout] = TIMEOUT
+          faraday.options[:open_timeout] = Datadome.configuration.open_timeout
+          faraday.options[:timeout] = Datadome.configuration.timeout
         end
     end
 
