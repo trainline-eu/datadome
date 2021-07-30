@@ -6,9 +6,6 @@ require "socket"
 module Datadome
   class Client
 
-    OPEN_TIMEOUT = 1
-    TIMEOUT = 3
-
     class << self
 
       def base_url
@@ -50,10 +47,10 @@ module Datadome
         end
 
       ValidationResponse.from_faraday_response(response)
-    rescue Faraday::Error::ConnectionFailed, Faraday::Error::TimeoutError => e
+    rescue Faraday::ConnectionFailed, Faraday::TimeoutError => e
       Datadome.logger.warn("Datadome: Timeout #{e}")
 
-      ValidationResponse.pass
+      ValidationResponse.timeout
     end
 
     private
@@ -63,8 +60,8 @@ module Datadome
         Faraday.new(url: self.class.base_url) do |faraday|
           faraday.request(:url_encoded)
           faraday.adapter(Faraday.default_adapter)
-          faraday.options[:open_timeout] = OPEN_TIMEOUT
-          faraday.options[:timeout] = TIMEOUT
+          faraday.options[:open_timeout] = Datadome.configuration.open_timeout
+          faraday.options[:timeout] = Datadome.configuration.timeout
         end
     end
 

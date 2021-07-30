@@ -5,6 +5,10 @@ module Datadome
 
     class << self
 
+      def timeout
+        new(timeout: true, pass: true, redirect: false)
+      end
+
       def pass
         new(pass: true, redirect: false)
       end
@@ -40,7 +44,7 @@ module Datadome
 
     end
 
-    attr_accessor :pass, :redirect
+    attr_accessor :pass, :redirect, :timeout
     attr_accessor :redirection_location, :request_headers, :response_body, :response_headers, :response_status
 
     def initialize(attrs = {})
