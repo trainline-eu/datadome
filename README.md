@@ -51,6 +51,9 @@ Datadome.configure do |config|
   
   # Expose enriched headers
   # config.expose_headers = true
+  
+  # Use HTTPS or HTTP
+  # config.use_https = true
 end
 
 Datadome.logger = Logger.new(STDOUT, level: :debug)
