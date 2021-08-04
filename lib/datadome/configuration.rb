@@ -11,10 +11,11 @@ module Datadome
       @include_matchers = []
       @monitor_mode = false
       @expose_headers = false
+      @open_timeout = 1
+      @timeout = 3
       @use_https = true
     end
 
-    attr_accessor :api_key, :api_server, :exclude_matchers, :include_matchers, :monitor_mode, :expose_headers, :use_https
-
+    attr_accessor :api_key, :api_server, :exclude_matchers, :include_matchers, :monitor_mode, :expose_headers, :open_timeout, :timeout, :use_https
   end
 end

@@ -50,10 +50,15 @@ Datadome.configure do |config|
   config.monitor_mode = true
   
   # Expose enriched headers
+  # Enabling enriched headers will also expose the API response time. 
   # config.expose_headers = true
   
   # Use HTTPS or HTTP
   # config.use_https = true
+
+  # Configure http client timeouts (in seconds)
+  # config.open_timeout = 1
+  # config.timeout = 3
 end
 
 Datadome.logger = Logger.new(STDOUT, level: :debug)
