@@ -9,7 +9,11 @@ module Datadome
     class << self
 
       def base_url
-        "https://#{Datadome.configuration.api_server}/"
+        if Datadome.configuration.use_https
+          "https://#{Datadome.configuration.api_server}/"
+        else
+          "http://#{Datadome.configuration.api_server}/"
+        end
       end
 
       def default_params

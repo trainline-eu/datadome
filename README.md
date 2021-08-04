@@ -56,6 +56,9 @@ Datadome.configure do |config|
   # Configure http client timeouts (in seconds)
   # config.open_timeout = 1
   # config.timeout = 3
+  
+  # Configure non secure HTTP
+  # config.use_https = true
 end
 
 Datadome.logger = Logger.new(STDOUT, level: :debug)
