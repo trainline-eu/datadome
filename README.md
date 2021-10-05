@@ -45,9 +45,12 @@ Datadome.configure do |config|
   # Add exclude matchers (optional)
   config.exclude_matchers << ->(host, path) { path =~ /\.(jpg|jpeg|png|gif)/i }
   
-  # Enable monitor mode (optional)
-  # Does not block incoming requests flagged as coming from a bot (useful for logging only)
-  config.monitor_mode = true
+  # Bot request interception
+  # A bot request is intercepted when monitor mode is false or when an intersept matcher returns true
+  # Monitor mode : when set to true, incoming requests flagged as coming from a bot (useful for logging only) are not blocked
+  # config.monitor_mode = true
+  # Intercept matchers : when at least one of the matchers returns true, according bot request is intercepted. Allows specifying custom criteria from the env. Works with monitor mode enabled.
+  # config.intercept_matchers << ->(env) { /Webapp/.match(env['HTTP_USER_AGENT'] }
   
   # Expose enriched headers
   # config.expose_headers = true

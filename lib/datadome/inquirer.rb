@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 require "rack"
-
+require 'pry-byebug'
 module Datadome
   class Inquirer
 
-    def initialize(env, exclude_matchers: nil, include_matchers: nil, monitor_mode: nil, expose_headers: nil)
+    def initialize(env, exclude_matchers: nil, include_matchers: nil, monitor_mode: nil, intercept_matchers: nil, expose_headers: nil)
       @env = env
 
       @monitor_mode = monitor_mode || Datadome.configuration.monitor_mode
+      @intercept_matchers = intercept_matchers || Datadome.configuration.intercept_matchers
       @expose_headers = expose_headers || Datadome.configuration.expose_headers
       @exclude_matchers = exclude_matchers || Datadome.configuration.exclude_matchers
       @include_matchers = include_matchers || Datadome.configuration.include_matchers
@@ -69,7 +70,7 @@ module Datadome
     end
 
     def intercept?
-      @monitor_mode == false && (@validation_response.pass == false || @validation_response.redirect)
+      (@monitor_mode == false || @intercept_matchers.any? { |matcher| matcher.call(@env) }) && (@validation_response.pass == false || @validation_response.redirect)
     end
 
     def inquire
