@@ -48,9 +48,10 @@ RSpec.describe Datadome::Inquirer do
   let(:exclude_matchers) { [] }
   let(:include_matchers) { [] }
   let(:monitor_mode) { false }
+  let(:intercept_matchers) { [] }
   let(:expose_headers) { false }
 
-  subject { described_class.new(env, exclude_matchers: exclude_matchers, include_matchers: include_matchers, monitor_mode: monitor_mode, expose_headers: expose_headers) }
+  subject { described_class.new(env, exclude_matchers: exclude_matchers, include_matchers: include_matchers, monitor_mode: monitor_mode, intercept_matchers: intercept_matchers, expose_headers: expose_headers) }
 
   describe "#ignore?" do
     context "without matchers" do
@@ -175,7 +176,7 @@ RSpec.describe Datadome::Inquirer do
   end
 
   describe "#intercept?" do
-    context "with monitor mode disabled and when request is flagged as coming from a bot" do
+    context 'monitor mode is disabled' do
       let(:monitor_mode) { false }
 
       it "returns true" do
@@ -186,14 +187,28 @@ RSpec.describe Datadome::Inquirer do
       end
     end
 
-    context "with monitor mode enabled and when request is flagged as coming from a bot" do
+    context "monitor mode is enabled" do
       let(:monitor_mode) { true }
+      let(:intercept_matchers) { [->(env) { /Webapp/.match(env['HTTP_USER_AGENT']) }]  }
 
-      it "returns false" do
-        validation_response = instance_double("Datadome::ValidationResponse", pass: false, redirect: false)
-        subject.instance_variable_set('@validation_response', validation_response)
+      context "when a matcher returns true and when request is flagged as coming from a bot" do
+        it "returns true" do
+          env['HTTP_USER_AGENT'] = "Webapp"
+          validation_response = instance_double("Datadome::ValidationResponse", pass: false, redirect: false)
+          subject.instance_variable_set('@validation_response', validation_response)
 
-        expect(subject.intercept?).to eq(false)
+          expect(subject.intercept?).to eq(true)
+        end
+      end
+
+      context "when all matchers return false and when request is flagged as coming from a bot" do
+        it "returns false" do
+          env['HTTP_USER_AGENT'] = "Mweb"
+          validation_response = instance_double("Datadome::ValidationResponse", pass: false, redirect: false)
+          subject.instance_variable_set('@validation_response', validation_response)
+
+          expect(subject.intercept?).to eq(false)
+        end
       end
     end
   end
