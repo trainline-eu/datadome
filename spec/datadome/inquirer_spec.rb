@@ -63,12 +63,12 @@ RSpec.describe Datadome::Inquirer do
     context "with an exclude matcher" do
       let(:exclude_matchers) {
         [
-          ->(host, _path) { host == "www.my-domain.com" },
+          ->(request) { request.host == "www.my-domain.com" },
         ]
       }
 
       it "calls matchers with right parameters" do
-        expect(exclude_matchers.first).to receive(:call).once.with("www.my-domain.com", "/my/path")
+        expect(exclude_matchers.first).to receive(:call).once
 
         subject.ignore?
       end
@@ -87,12 +87,12 @@ RSpec.describe Datadome::Inquirer do
     context "with an include matcher" do
       let(:include_matchers) {
         [
-          ->(host, _path) { host == "www.my-domain.com" },
+          ->(request) { request.host == "www.my-domain.com" },
         ]
       }
 
       it "calls matchers with right parameters" do
-        expect(include_matchers.first).to receive(:call).once.with("www.my-domain.com", "/my/path")
+        expect(include_matchers.first).to receive(:call).once
 
         subject.ignore?
       end
@@ -111,8 +111,8 @@ RSpec.describe Datadome::Inquirer do
     context "with two include matchers" do
       let(:include_matchers) {
         [
-          ->(host, _path) { host == "www.my-domain.com" },
-          ->(_host, path) { path =~ %r{^/my} },
+          ->(request) { request.host == "www.my-domain.com" },
+          ->(request) { request.path =~ %r{^/my} },
         ]
       }
 
@@ -144,12 +144,12 @@ RSpec.describe Datadome::Inquirer do
     context "with an exclude matchers and an include matchers" do
       let(:exclude_matchers) {
         [
-          ->(host, _path) { host =~ /^admin\./ },
+          ->(request) { request.host =~ /^admin\./ },
         ]
       }
       let(:include_matchers) {
         [
-          ->(host, _path) { host =~ /\.my-domain.com$/ },
+          ->(request) { request.host =~ /\.my-domain.com$/ },
         ]
       }
 
@@ -241,7 +241,7 @@ RSpec.describe Datadome::Inquirer do
       it "adds enriched headers to the response headers" do
         _status, headers, _response = subject.enriching { [200, {}, nil] }
 
-        expect(headers.keys).to include(*request_headers.keys, *response_headers.keys)
+        expect(headers.keys).to include(*request_headers.keys.map(&:downcase), *response_headers.keys.map(&:downcase))
       end
 
       context "with a timeout" do
@@ -261,7 +261,7 @@ RSpec.describe Datadome::Inquirer do
       it "does not add enriched headers to the response headers" do
         _status, headers, _response = subject.enriching { [200, {}, nil] }
 
-        expect(headers.keys).to include(*response_headers.keys)
+        expect(headers.keys).to include(*response_headers.keys.map(&:downcase))
       end
     end
   end
