@@ -50,7 +50,7 @@ module Datadome
       if include_matchers.any?
         any_include_matches =
           include_matchers.any? do |matcher|
-            matcher.call(request.host, request.path)
+            matcher.call(request)
           end
 
         return true unless any_include_matches
@@ -59,7 +59,7 @@ module Datadome
       if exclude_matchers.any?
         any_exclude_matches =
           exclude_matchers.any? do |matcher|
-            matcher.call(request.host, request.path)
+            matcher.call(request)
           end
 
         return true if any_exclude_matches

@@ -40,10 +40,10 @@ Datadome.configure do |config|
   config.api_server = "api-us-east-1.datadome.co"
 
   # Add include matchers (optional)
-  config.include_matchers << ->(host, path) { host == "www.my-domain.com" }
+  config.include_matchers << ->(request) { request.host == "www.my-domain.com" }
 
   # Add exclude matchers (optional)
-  config.exclude_matchers << ->(host, path) { path =~ /\.(jpg|jpeg|png|gif)/i }
+  config.exclude_matchers << ->(request) { request.path =~ /\.(jpg|jpeg|png|gif)/i }
   
   # Bot request interception
   # A bot request is intercepted when monitor mode is false or when an intersept matcher returns true
